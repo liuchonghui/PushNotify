@@ -1,4 +1,4 @@
-package com.mfashiongallery.emag.express.push.model;
+package tools.android.pushnotify;
 
 public interface RoyalNotificationProvider<T extends RoyalNotificationItem>
 		extends NotificationProvider<T> {

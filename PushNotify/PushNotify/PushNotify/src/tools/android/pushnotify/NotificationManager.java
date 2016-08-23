@@ -1,4 +1,4 @@
-package com.mfashiongallery.emag.express.push.model;
+package tools.android.pushnotify;
 
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -9,8 +9,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-
-import com.mfashiongallery.emag.R;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -140,23 +138,34 @@ public class NotificationManager {
 				Log.d("NOTIFY", "ticker:" + ticker);
 				Notification notification = null;
 				Notification.Builder builder = null;
-				builder = new Notification.Builder(
-						context.getApplicationContext())
-						.setSmallIcon(provider.getIcon() > 0 ? provider.getIcon() : R.drawable.ic_stat_normal)
-						.setTicker(ticker)
-						.setWhen(System.currentTimeMillis());
-				if (top.getIcon() != null && top.getIcon().length() > 0
-						&& Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-					 builder.setLargeIcon(BitmapFactory.decodeFile(top.getIcon()));
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+					builder = new Notification.Builder(
+							context.getApplicationContext())
+							.setTicker(ticker)
+							.setWhen(System.currentTimeMillis());
+					if (provider.getIcon() > 0) {
+						builder.setSmallIcon(provider.getIcon());
+					}
+					if (top.getIcon() != null && top.getIcon().length() > 0) {
+						builder.setLargeIcon(BitmapFactory.decodeFile(top.getIcon()));
+					}
+					builder.setContentTitle(top.getTitle()).setContentText(top.getText());
+					notification = builder.getNotification();
+					notification.contentIntent = PendingIntent.getActivity(
+							context.getApplicationContext(), 0, intent,
+							PendingIntent.FLAG_UPDATE_CURRENT);
+				} else {
+					notification = new Notification(provider.getIcon(), ticker,
+							System.currentTimeMillis());
+				    notification.setLatestEventInfo(context.getApplicationContext(), top.getTitle(),
+							top.getText(),
+							PendingIntent.getActivity(
+							context.getApplicationContext(), 0, intent,
+							PendingIntent.FLAG_UPDATE_CURRENT));
 				}
-				builder.setContentTitle(top.getTitle()).setContentText(top.getText());
-				notification = builder.getNotification();
 				if (!provider.canClearNotifications()) {
 					notification.flags |= Notification.FLAG_NO_CLEAR;
 				}
-				notification.contentIntent = PendingIntent.getActivity(
-						context.getApplicationContext(), 0, intent,
-						PendingIntent.FLAG_UPDATE_CURRENT);
 				if (ticker != null) {
 					setNotificationDefaults(notification,
 							provider.eventsVibro(), provider.getSound(),
@@ -196,17 +205,31 @@ public class NotificationManager {
 			Log.d("NOTIFY", "ticker:" + ticker);
 			Notification notification = null;
 			Notification.Builder builder = null;
-			builder = new Notification.Builder(
-					context.getApplicationContext())
-					.setSmallIcon(provider.getIcon() > 0 ? provider.getIcon() : R.drawable.ic_stat_normal)
-					.setTicker(ticker)
-					.setWhen(System.currentTimeMillis());
-			if (top.getIcon() != null && top.getIcon().length() > 0
-					&& Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-				builder.setLargeIcon(BitmapFactory.decodeFile(top.getIcon()));
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+				builder = new Notification.Builder(
+						context.getApplicationContext())
+						.setTicker(ticker)
+						.setWhen(System.currentTimeMillis());
+				if (provider.getIcon() > 0) {
+					builder.setSmallIcon(provider.getIcon());
+				}
+				if (top.getIcon() != null && top.getIcon().length() > 0) {
+					builder.setLargeIcon(BitmapFactory.decodeFile(top.getIcon()));
+				}
+				builder.setContentTitle(top.getTitle()).setContentText(top.getText());
+				notification = builder.getNotification();
+				notification.contentIntent = PendingIntent.getActivity(
+						context.getApplicationContext(), 0, intent,
+						PendingIntent.FLAG_UPDATE_CURRENT);
+			} else {
+				notification = new Notification(provider.getIcon(), ticker,
+						System.currentTimeMillis());
+				notification.setLatestEventInfo(context.getApplicationContext(), top.getTitle(),
+						top.getText(),
+						PendingIntent.getActivity(
+								context.getApplicationContext(), 0, intent,
+								PendingIntent.FLAG_UPDATE_CURRENT));
 			}
-			builder.setContentTitle(top.getTitle()).setContentText(top.getText());
-			notification = builder.getNotification();
 			if (!provider.canClearNotifications()) {
 				notification.flags |= Notification.FLAG_NO_CLEAR;
 			}
@@ -222,9 +245,6 @@ public class NotificationManager {
 					", royalTypeName:" + royalTypeName +
 					", royalNotifyId:" + royalNotifyId +
 					", royalMarkedId:" + royalMarkedId);
-			notification.contentIntent = PendingIntent.getActivity(context
-							.getApplicationContext(), id, intent,
-					PendingIntent.FLAG_UPDATE_CURRENT);
 			if (ticker != null) {
 				setNotificationDefaults(notification,
 						provider.eventsVibro(), provider.getSound(),
@@ -293,23 +313,34 @@ public class NotificationManager {
 				Log.d("NOTIFY", "ticker:" + ticker);
 				Notification notification = null;
 				Notification.Builder builder = null;
-				builder = new Notification.Builder(
-						context.getApplicationContext())
-						.setSmallIcon(provider.getIcon() > 0 ? provider.getIcon() : R.drawable.ic_stat_normal)
-						.setTicker(ticker)
-						.setWhen(System.currentTimeMillis());
-				if (top.getIcon() != null && top.getIcon().length() > 0
-						&& Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-					builder.setLargeIcon(BitmapFactory.decodeFile(top.getIcon()));
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+					builder = new Notification.Builder(
+							context.getApplicationContext())
+							.setTicker(ticker)
+							.setWhen(System.currentTimeMillis());
+					if (provider.getIcon() > 0) {
+						builder.setSmallIcon(provider.getIcon());
+					}
+					if (top.getIcon() != null && top.getIcon().length() > 0) {
+						builder.setLargeIcon(BitmapFactory.decodeFile(top.getIcon()));
+					}
+					builder.setContentTitle(top.getTitle()).setContentText(top.getText());
+					notification = builder.getNotification();
+					notification.contentIntent = PendingIntent.getActivity(
+							context.getApplicationContext(), 0, intent,
+							PendingIntent.FLAG_UPDATE_CURRENT);
+				} else {
+					notification = new Notification(provider.getIcon(), ticker,
+							System.currentTimeMillis());
+					notification.setLatestEventInfo(context.getApplicationContext(), top.getTitle(),
+							top.getText(),
+							PendingIntent.getActivity(
+									context.getApplicationContext(), 0, intent,
+									PendingIntent.FLAG_UPDATE_CURRENT));
 				}
-				builder.setContentTitle(top.getTitle()).setContentText(top.getText());
-				notification = builder.getNotification();
 				if (!provider.canClearNotifications()) {
 					notification.flags |= Notification.FLAG_NO_CLEAR;
 				}
-				notification.contentIntent = PendingIntent.getActivity(
-						context.getApplicationContext(), 0, intent,
-						PendingIntent.FLAG_UPDATE_CURRENT);
 				// if (ticker != null) {
 				// setNotificationDefaults(notification,
 				// provider.eventsVibro(), provider.getSound(),

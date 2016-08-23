@@ -1,4 +1,4 @@
-package com.mfashiongallery.emag.express.push.model;
+package tools.android.pushnotify;
 
 import android.content.Intent;
 
